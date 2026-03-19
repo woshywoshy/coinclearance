@@ -242,12 +242,6 @@
   /* ── Print-only table hidden on screen ── */
   #print-table { display: none; }
 
-  /* ── mobile-sticky: inert on desktop, sticky on mobile ── */
-  .mobile-sticky { display: contents; }
-
-  /* ── Mobile table: hidden on desktop ── */
-  .mobile-table-wrap { display: none; }
-
   /* ══════════════════════════════════════
      MOBILE STYLES — single-column layout
   ══════════════════════════════════════ */
@@ -260,7 +254,6 @@
 
     /* ── Sticky top bar ── */
     .mobile-sticky {
-      display: block;
       position: sticky;
       top: 0;
       z-index: 100;
@@ -304,14 +297,14 @@
     .egm-grid { display: none !important; }
 
     /* ── Mobile single table ── */
-    .mobile-table-wrap {
-      display: block;
-      padding: 10px 12px 0;
-    }
-
     #mobile-table {
+      display: table;
       width: 100%;
       border-collapse: collapse;
+    }
+
+    .mobile-table-wrap {
+      padding: 10px 12px 0;
     }
 
     #mobile-table thead tr {
@@ -386,27 +379,12 @@
       min-height: unset;
     }
 
-    /* Hide everything except what the print table needs */
     .btn-print, .btn-clear, button { display: none !important; }
     .egm-grid { display: none !important; }
-    .mobile-table-wrap { display: none !important; }
-    #egm-form { display: contents; }
-
-    /* Reset sticky wrapper — treat as plain block for print */
-    .mobile-sticky {
-      display: block !important;
-      position: static !important;
-      border-bottom: none !important;
-      padding: 0 !important;
-      background: transparent !important;
-    }
 
     #print-table { display: table; width: 100%; border-collapse: collapse; margin-top: 4pt; }
 
     .header {
-      display: flex !important;
-      flex-direction: row !important;
-      flex-wrap: wrap !important;
       border-bottom: 1.5pt solid #000;
       padding-bottom: 5pt;
       margin-bottom: 4pt;
@@ -414,7 +392,7 @@
     .header-left h1 { color: #000 !important; font-size: 14pt; }
     .header-left h1 span { color: #c47a00 !important; }
 
-    .stats-bar { display: flex !important; margin-bottom: 4pt; gap: 10pt; flex-wrap: wrap !important; }
+    .stats-bar { margin-bottom: 4pt; gap: 10pt; }
     .stat { background: #f5f5f5 !important; border: 0.5pt solid #ccc !important; padding: 3pt 8pt; }
     .stat-label { color: #666 !important; font-size: 6pt; }
     .stat-value { color: #c47a00 !important; font-size: 9pt; }
@@ -492,9 +470,6 @@
   </div>
 </div>
 
-<!-- Form wrapper: required for iOS Safari to show Next key on keyboard -->
-<form id="egm-form" onsubmit="return false;" autocomplete="off">
-
 <!-- 5-column screen grid (desktop) -->
 <div class="egm-grid" id="egm-grid"></div>
 
@@ -510,8 +485,6 @@
     <tbody id="mobile-tbody"></tbody>
   </table>
 </div>
-
-</form>
 
 <!-- Print-only 8-column table built by JS -->
 <table id="print-table"></table>
@@ -552,7 +525,7 @@
       <td class="col-egm">${String(n).padStart(2,'0')}</td>
       <td>${disabled
         ? '<span class="disabled-tag">no coins</span>'
-        : `<input type="text" class="coin-input" id="${inputId}" placeholder="0" autocomplete="off" inputmode="decimal" pattern="[0-9]*" enterkeyhint="next">`
+        : `<input type="text" class="coin-input" id="${inputId}" placeholder="0" autocomplete="off" inputmode="numeric" pattern="[0-9]*" enterkeyhint="next">`
       }</td>
       <td class="hopper-cell col-hopper"></td>
       <td class="notes-cell col-notes"></td>

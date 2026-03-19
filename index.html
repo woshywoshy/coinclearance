@@ -470,6 +470,9 @@
   </div>
 </div>
 
+<!-- Form wrapper: required for iOS Safari to show Next key on keyboard -->
+<form id="egm-form" onsubmit="return false;" autocomplete="off">
+
 <!-- 5-column screen grid (desktop) -->
 <div class="egm-grid" id="egm-grid"></div>
 
@@ -485,6 +488,8 @@
     <tbody id="mobile-tbody"></tbody>
   </table>
 </div>
+
+</form>
 
 <!-- Print-only 8-column table built by JS -->
 <table id="print-table"></table>
@@ -525,7 +530,7 @@
       <td class="col-egm">${String(n).padStart(2,'0')}</td>
       <td>${disabled
         ? '<span class="disabled-tag">no coins</span>'
-        : `<input type="text" class="coin-input" id="${inputId}" placeholder="0" autocomplete="off" inputmode="numeric" pattern="[0-9]*" enterkeyhint="next">`
+        : `<input type="text" class="coin-input" id="${inputId}" placeholder="0" autocomplete="off" inputmode="decimal" pattern="[0-9]*" enterkeyhint="next">`
       }</td>
       <td class="hopper-cell col-hopper"></td>
       <td class="notes-cell col-notes"></td>

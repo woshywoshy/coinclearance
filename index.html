@@ -491,7 +491,7 @@
         <td class="col-egm">${String(n).padStart(2,'0')}</td>
         <td>${disabled
           ? '<span class="disabled-tag">no coins</span>'
-          : `<input type="number" class="coin-input" id="egm-${n}" min="0" step="1" placeholder="0" autocomplete="off" inputmode="numeric" pattern="[0-9]*">`
+          : `<input type="text" class="coin-input" id="egm-${n}" placeholder="0" autocomplete="off" inputmode="numeric" pattern="[0-9]*" enterkeyhint="next">`
         }</td>
         <td class="hopper-cell col-hopper"></td>
         <td class="notes-cell col-notes"></td>
@@ -500,8 +500,9 @@
       if (!disabled) {
         const input = tr.querySelector('.coin-input');
         input.addEventListener('input', () => {
-          if (input.value.includes('.')) input.value = Math.floor(parseFloat(input.value));
-          if (input.value < 0) input.value = 0;
+          // Strip anything that isn't a digit
+          input.value = input.value.replace(/[^0-9]/g, '');
+          if (input.value !== '' && parseInt(input.value) < 0) input.value = 0;
           input.classList.toggle('has-value', input.value !== '' && input.value !== '0');
           saveData();
         });

@@ -242,6 +242,12 @@
   /* ── Print-only table hidden on screen ── */
   #print-table { display: none; }
 
+  /* ── mobile-sticky: inert on desktop, sticky on mobile ── */
+  .mobile-sticky { display: contents; }
+
+  /* ── Mobile table: hidden on desktop ── */
+  .mobile-table-wrap { display: none; }
+
   /* ══════════════════════════════════════
      MOBILE STYLES — single-column layout
   ══════════════════════════════════════ */
@@ -254,6 +260,7 @@
 
     /* ── Sticky top bar ── */
     .mobile-sticky {
+      display: block;
       position: sticky;
       top: 0;
       z-index: 100;
@@ -297,14 +304,14 @@
     .egm-grid { display: none !important; }
 
     /* ── Mobile single table ── */
-    #mobile-table {
-      display: table;
-      width: 100%;
-      border-collapse: collapse;
+    .mobile-table-wrap {
+      display: block;
+      padding: 10px 12px 0;
     }
 
-    .mobile-table-wrap {
-      padding: 10px 12px 0;
+    #mobile-table {
+      width: 100%;
+      border-collapse: collapse;
     }
 
     #mobile-table thead tr {
@@ -379,28 +386,35 @@
       min-height: unset;
     }
 
+    /* Hide everything except what the print table needs */
     .btn-print, .btn-clear, button { display: none !important; }
     .egm-grid { display: none !important; }
-
-    /* Hide mobile-only elements; reset sticky bar for print */
-    .mobile-sticky { position: static !important; border-bottom: none !important; padding: 0 !important; background: transparent !important; }
     .mobile-table-wrap { display: none !important; }
     #egm-form { display: contents; }
+
+    /* Reset sticky wrapper — treat as plain block for print */
+    .mobile-sticky {
+      display: block !important;
+      position: static !important;
+      border-bottom: none !important;
+      padding: 0 !important;
+      background: transparent !important;
+    }
 
     #print-table { display: table; width: 100%; border-collapse: collapse; margin-top: 4pt; }
 
     .header {
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: wrap !important;
       border-bottom: 1.5pt solid #000;
       padding-bottom: 5pt;
       margin-bottom: 4pt;
-      /* Reset any mobile overrides */
-      flex-direction: row !important;
-      flex-wrap: wrap !important;
     }
     .header-left h1 { color: #000 !important; font-size: 14pt; }
     .header-left h1 span { color: #c47a00 !important; }
 
-    .stats-bar { margin-bottom: 4pt; gap: 10pt; }
+    .stats-bar { display: flex !important; margin-bottom: 4pt; gap: 10pt; flex-wrap: wrap !important; }
     .stat { background: #f5f5f5 !important; border: 0.5pt solid #ccc !important; padding: 3pt 8pt; }
     .stat-label { color: #666 !important; font-size: 6pt; }
     .stat-value { color: #c47a00 !important; font-size: 9pt; }

@@ -3,742 +3,791 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Weekly Coin Clearance</title>
+<title>EGM Dropbox Clearance</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@400;600;700;900&display=swap');
-
   :root {
-    --bg: #0d0f14;
-    --surface: #161920;
-    --border: #2a2f3d;
-    --accent: #f0a500;
-    --accent2: #e05c00;
-    --text: #e8ecf4;
-    --muted: #6b7280;
-    --input-bg: #1e2230;
-    --input-focus: #252b3b;
-    --row-alt: #13161f;
-    --green: #22c55e;
+    --bg: #0f1117;
+    --surface: #181b24;
+    --surface-alt: #1e2230;
+    --border: #2a2e3d;
+    --text: #e4e6ed;
+    --text-muted: #7a7f94;
+    --accent: #4ade80;
+    --accent-dim: rgba(74, 222, 128, 0.1);
+    --accent-border: rgba(74, 222, 128, 0.25);
+    --red: #f87171;
+    --red-dim: rgba(248, 113, 113, 0.1);
+    --blue: #60a5fa;
+    --yellow: #fbbf24;
+    --no-coin-bg: #1a1520;
+    --no-coin-border: rgba(248, 113, 113, 0.15);
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html, body {
-    height: 100%;
-  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
+    font-family: 'DM Sans', sans-serif;
     background: var(--bg);
     color: var(--text);
-    font-family: 'Barlow Condensed', sans-serif;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    padding: 14px 16px 16px;
-  }
-
-  /* ── Header ── */
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    border-bottom: 2px solid var(--accent);
-    padding-bottom: 10px;
-    gap: 12px;
-    flex-wrap: wrap;
-    flex-shrink: 0;
-  }
-
-  .header-left h1 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: 1.6rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    line-height: 1;
-    color: var(--text);
-  }
-  .header-left h1 span { color: var(--accent); }
-
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .btn-print {
-    background: var(--accent);
-    color: #000;
-    border: none;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 6px 16px;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .btn-print:hover { background: #ffb81a; }
-
-  .btn-clear {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600;
-    font-size: 0.76rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 5px 12px;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .btn-clear:hover { border-color: var(--accent2); color: var(--accent2); }
-
-  /* ── Stats bar ── */
-  .stats-bar {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-    align-items: center;
-    flex-shrink: 0;
-  }
-
-  .stat {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 5px 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-  }
-
-  .stat-label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.58rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  .stat-value {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.95rem;
-    color: var(--accent);
-    font-weight: 700;
-  }
-
-  /* ── 5-column EGM card grid ── */
-  .egm-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-    flex: 1;
-  }
-
-  /* Each column is its own mini-table panel */
-  .egm-col {
-    border: 1px solid var(--border);
-    border-radius: 5px;
+    height: 100vh;
     overflow: hidden;
     display: flex;
     flex-direction: column;
   }
 
-  .egm-col table {
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand-icon {
+    width: 34px;
+    height: 34px;
+    background: var(--accent-dim);
+    border: 1px solid var(--accent-border);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .brand h1 {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+
+  .brand h1 span {
+    color: var(--accent);
+  }
+
+  .stats-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .stat-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 12px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+  }
+
+  .stat-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .stat-value.total-coins {
+    color: var(--accent);
+    font-size: 20px;
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--surface-alt);
+    color: var(--text);
+  }
+
+  .btn:hover {
+    border-color: var(--text-muted);
+    transform: translateY(-1px);
+  }
+
+  .btn-accent {
+    background: var(--accent);
+    color: #0f1117;
+    border-color: var(--accent);
+  }
+
+  .btn-accent:hover {
+    background: #6ee7a0;
+    border-color: #6ee7a0;
+  }
+
+  .btn-red {
+    color: var(--red);
+    border-color: var(--no-coin-border);
+    background: var(--red-dim);
+  }
+
+  .btn-red:hover {
+    border-color: var(--red);
+  }
+
+  .btn-blue {
+    color: var(--blue);
+    border-color: rgba(96, 165, 250, 0.25);
+    background: rgba(96, 165, 250, 0.08);
+  }
+
+  .btn-blue:hover {
+    border-color: var(--blue);
+  }
+
+  .container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 8px 12px 8px;
+    overflow: hidden;
+  }
+
+  .grid-wrapper {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .table-col {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .table-col table {
     width: 100%;
-    border-collapse: collapse;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .table-col thead {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  .table-col tbody {
+    display: flex;
+    flex-direction: column;
     flex: 1;
   }
 
-  .egm-col thead tr {
-    background: #1a1e2b;
-    border-bottom: 2px solid var(--accent);
+  .table-col tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    flex: 1;
   }
 
-  .egm-col th {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.55rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+  .date-input {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    font-weight: 700;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--text);
+    padding: 4px 8px;
+    cursor: pointer;
+  }
+
+  .date-input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .date-input::-webkit-calendar-picker-indicator {
+    filter: invert(0.7);
+    cursor: pointer;
+  }
+
+  .total-input {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    font-weight: 700;
     color: var(--accent);
-    padding: 5px 6px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 4px 8px;
+    width: 140px;
+    -moz-appearance: textfield;
+  }
+
+  .total-input::-webkit-outer-spin-button,
+  .total-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .total-input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .total-input::placeholder {
+    color: var(--text-muted);
+  }
+
+  .table-col table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .table-col thead th {
+    background: var(--surface-alt);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    padding: 6px 6px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .table-col thead th:first-child {
+    text-align: left;
+    width: 36px;
+  }
+
+  .table-col thead th:nth-child(2) {
+    width: 40%;
+  }
+
+  .table-col tbody td:nth-child(2) {
+    width: 40%;
+  }
+
+  .table-col tbody td:first-child {
+    width: 36px;
     text-align: left;
   }
 
-  .egm-col th.col-egm  { width: 32px; text-align: center; }
-  .egm-col th.col-coins { }
-  .egm-col th.col-hopper { width: 48px; }
-  .egm-col th.col-notes  { width: 36px; }
-
-  .egm-col tbody tr {
-    border-bottom: 1px solid var(--border);
-    transition: background 0.08s;
+  .table-col tbody tr {
+    transition: background 0.1s ease;
   }
-  .egm-col tbody tr:last-child { border-bottom: none; }
-  .egm-col tbody tr:nth-child(even) { background: var(--row-alt); }
-  .egm-col tbody tr:hover { background: #1c2030; }
-  .egm-col tbody tr.disabled-row { opacity: 0.4; }
-  .egm-col tbody tr.disabled-row:hover { background: inherit; }
 
-  .egm-col td {
-    padding: 3px 6px;
+  .table-col tbody tr:hover {
+    background: rgba(255,255,255,0.02);
+  }
+
+  .table-col tbody tr.no-coin-row {
+    background: var(--no-coin-bg);
+  }
+
+  .table-col tbody tr.no-coin-row:hover {
+    background: #1e1828;
+  }
+
+  .table-col tbody td {
+    padding: 0 6px;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+    font-size: 12px;
     vertical-align: middle;
   }
 
-  .egm-col td.col-egm {
-    text-align: center;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--muted);
-    font-weight: 600;
-    letter-spacing: 0.04em;
+  .table-col tbody tr:last-child td {
+    border-bottom: none;
   }
-  .egm-col tbody tr:not(.disabled-row) td.col-egm { color: var(--text); }
 
-  /* Coin input */
-  .coin-input {
-    background: var(--input-bg);
-    border: 1px solid var(--border);
+  .egm-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 12px;
     color: var(--text);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 1rem;
-    padding: 4px 6px;
-    width: 100%;
-    border-radius: 2px;
-    outline: none;
-    transition: border-color 0.12s, background 0.12s;
-    -moz-appearance: textfield;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
   }
-  .coin-input::-webkit-inner-spin-button,
-  .coin-input::-webkit-outer-spin-button { -webkit-appearance: none; }
-  .coin-input:focus { border-color: var(--accent); background: var(--input-focus); }
-  .coin-input.has-value { border-color: var(--green); color: var(--green); }
 
-  .hopper-cell { font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; color: var(--muted); }
-  .notes-cell  { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; color: var(--muted); }
-
-  .disabled-tag {
-    display: inline-block;
-    background: #1a1d26;
-    border: 1px solid #2a2f3d;
-    border-radius: 2px;
-    padding: 1px 4px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.5rem;
-    color: #444b5e;
-    letter-spacing: 0.06em;
+  .egm-badge {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 8px;
+    font-weight: 600;
     text-transform: uppercase;
-    white-space: nowrap;
+    letter-spacing: 0.5px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    background: var(--red-dim);
+    color: var(--red);
+    border: 1px solid var(--no-coin-border);
   }
 
-  /* ── Print-only table hidden on screen ── */
-  #print-table { display: none; }
+  .empty-badge {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.06);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    display: none;
+  }
 
-  /* ══════════════════════════════════════
-     MOBILE STYLES — single-column layout
-  ══════════════════════════════════════ */
-  @media (max-width: 767px) {
+  .coin-input {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    width: 100%;
+    max-width: 80px;
+    padding: 5px 4px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    text-align: center;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    -moz-appearance: textfield;
+    display: block;
+    margin: 0 auto;
+  }
 
-    body {
-      padding: 0 0 32px;
-      display: block;
-    }
+  .coin-input::-webkit-outer-spin-button,
+  .coin-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 
-    /* ── Sticky top bar ── */
-    .mobile-sticky {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: var(--bg);
-      padding: 10px 12px 0;
-      border-bottom: 2px solid var(--accent);
-    }
+  .coin-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+  }
 
-    /* Header: title left, buttons right on one line */
-    .header {
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: nowrap;
+  .coin-input.has-value {
+    border-color: var(--accent-border);
+    background: var(--accent-dim);
+  }
+
+  .print-layout {
+    display: none;
+  }
+
+  @media print {
+    @page { margin: 9.5mm; size: A4 portrait; }
+    body { background: #fff; color: #111; height: auto; overflow: visible; display: block; }
+    .header { position: static; background: #fff; border-bottom: 1.5px solid #111; padding: 4px 8px; }
+    .brand-icon { display: none; }
+    .brand h1 { color: #111; font-size: 13px; }
+    .brand h1 span { color: #111; }
+    .stat-card { background: #f5f5f5; border: 1px solid #ccc; padding: 2px 6px; }
+    .stat-label { color: #666; font-size: 8px; }
+    .stat-value, .stat-value.total-coins { color: #111; }
+    .actions { display: none; }
+    .date-input { color: #111; border-color: #999; font-size: 10px; padding: 1px 3px; }
+    .date-input::-webkit-calendar-picker-indicator { display: none; }
+    .total-input { color: #111; border-color: #999; font-size: 11px; padding: 1px 3px; width: 80px; }
+    .stats-row { gap: 6px; }
+
+    /* Hide the 5-column screen layout */
+    .container { display: none !important; }
+
+    /* Show the 2-column print layout */
+    .print-layout {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr;
       gap: 8px;
-      margin-bottom: 8px;
-      border-bottom: none;
-      padding-bottom: 0;
+      padding: 2px 0;
     }
 
-    .header-left h1 { font-size: 1.1rem; }
-
-    .header-right { gap: 6px; flex-wrap: nowrap; }
-
-    .btn-print { font-size: 0.75rem; padding: 6px 10px; }
-    .btn-clear { font-size: 0.72rem; padding: 5px 8px; }
-
-    /* Stats bar sits inside sticky bar */
-    .stats-bar {
-      gap: 8px;
-      margin-bottom: 10px;
-      flex-wrap: nowrap;
-    }
-
-    .stat {
-      flex: 1 1 0;
-      padding: 5px 10px;
-    }
-
-    /* ── Hide the desktop 5-column grid ── */
-    .egm-grid { display: none !important; }
-
-    /* ── Mobile single table ── */
-    #mobile-table {
-      display: table;
+    .print-layout table {
       width: 100%;
       border-collapse: collapse;
+      border: 1.5px solid #111;
+      font-size: 10px;
     }
 
-    .mobile-table-wrap {
-      padding: 10px 12px 0;
-    }
-
-    #mobile-table thead tr {
-      background: #1a1e2b;
-      border-bottom: 2px solid var(--accent);
-    }
-
-    #mobile-table th {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
+    .print-layout thead th {
+      background: #eee;
+      color: #333;
+      font-size: 9px;
+      font-weight: 700;
       text-transform: uppercase;
-      color: var(--accent);
-      padding: 7px 8px;
+      letter-spacing: 0.5px;
+      padding: 3px 3px;
+      text-align: center;
+      border-bottom: 1.5px solid #111;
+    }
+
+    .print-layout thead th:first-child {
       text-align: left;
+      width: 30px;
     }
 
-    #mobile-table th.col-egm    { width: 44px; text-align: center; }
-    #mobile-table th.col-hopper { width: 60px; }
-    #mobile-table th.col-notes  { width: 48px; }
-
-    #mobile-table tbody tr {
-      border-bottom: 1px solid var(--border);
-    }
-    #mobile-table tbody tr:nth-child(even) { background: var(--row-alt); }
-    #mobile-table tbody tr:hover           { background: #1c2030; }
-    #mobile-table tbody tr.disabled-row    { opacity: 0.4; }
-
-    #mobile-table td {
-      padding: 5px 8px;
+    .print-layout tbody td {
+      padding: 4.7px 3px;
+      border-bottom: 0.5px solid #bbb;
+      text-align: center;
+      font-size: 10.5px;
       vertical-align: middle;
     }
 
-    #mobile-table td.col-egm {
-      text-align: center;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.82rem;
-      color: var(--text);
-      font-weight: 600;
-    }
-    #mobile-table tbody tr.disabled-row td.col-egm { color: var(--muted); }
-
-    .coin-input {
-      font-size: 1.1rem;
-      padding: 6px 8px;
-      border-radius: 4px;
+    .print-layout tbody td:first-child {
+      text-align: left;
     }
 
-    .hopper-cell { font-size: 0.72rem; }
-    .notes-cell  { font-size: 0.78rem; }
+    .print-layout tbody tr:last-child td {
+      border-bottom: none;
+    }
 
-    .disabled-tag {
-      font-size: 0.55rem;
-      padding: 2px 5px;
+    .print-layout tbody tr.no-coin-row {
+      background: #f9f5f5;
+    }
+
+    .print-layout .egm-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 10.5px;
+      color: #111;
+    }
+
+    .print-layout .egm-badge {
+      font-size: 7px;
+      padding: 1px 3px;
+      background: #fee;
+      color: #c00;
+      border: 0.5px solid #c00;
+      border-radius: 2px;
+    }
+
+    .print-layout .coin-input {
+      display: none;
+    }
+
+    .print-layout .coin-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      font-weight: 500;
+      color: #111;
+    }
+
+    .print-layout .empty-badge {
+      font-size: 7px;
+      padding: 1px 3px;
+      background: #f0f0f0;
+      color: #888;
+      border: 0.5px solid #bbb;
+      border-radius: 2px;
+      display: none;
+    }
+
+    .print-layout .empty-badge.visible {
+      display: inline;
     }
   }
 
-
-  /* ════════════════════════════════
-     PRINT STYLES — A4 back-to-back
-  ════════════════════════════════ */
-  @media print {
-    @page { size: A4 portrait; margin: 10mm 8mm; }
-
-    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-
-    body {
-      background: #fff !important;
-      color: #000 !important;
-      padding: 0;
-      display: block;
-      min-height: unset;
-    }
-
-    .btn-print, .btn-clear, button { display: none !important; }
-    .egm-grid { display: none !important; }
-
-    #print-table { display: table; width: 100%; border-collapse: collapse; margin-top: 4pt; }
-
-    .header {
-      border-bottom: 1.5pt solid #000;
-      padding-bottom: 5pt;
-      margin-bottom: 4pt;
-    }
-    .header-left h1 { color: #000 !important; font-size: 14pt; }
-    .header-left h1 span { color: #c47a00 !important; }
-
-    .stats-bar { margin-bottom: 4pt; gap: 10pt; }
-    .stat { background: #f5f5f5 !important; border: 0.5pt solid #ccc !important; padding: 3pt 8pt; }
-    .stat-label { color: #666 !important; font-size: 6pt; }
-    .stat-value { color: #c47a00 !important; font-size: 9pt; }
-    #total-coins-input {
-      background: transparent !important; border: none !important;
-      border-bottom: 0.5pt solid #999 !important;
-      color: #c47a00 !important; font-size: 9pt; width: 60pt; padding: 0;
-    }
-    #clearance-date { color: #c47a00 !important; font-size: 9pt; }
-
-    #print-table thead tr { background: #f0f0f0 !important; border-bottom: 1.5pt solid #c47a00 !important; }
-    #print-table th {
-      color: #c47a00 !important; font-size: 8pt; padding: 5pt 4pt;
-      text-align: left; font-family: 'Share Tech Mono', monospace;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      border-bottom: 1.5pt solid #c47a00;
-    }
-    #print-table th.col-egm-p   { width: 24pt; text-align: center; }
-    #print-table th.col-coins-p  { width: 42pt; }
-    #print-table th.col-hopper-p { width: 34pt; }
-    #print-table th.col-notes-p  { width: 58pt; }
-    #print-table th.col-div      { width: 6pt; border: none; background: #fff !important; }
-
-    #print-table tbody tr { border-bottom: 0.5pt solid #ddd !important; }
-    #print-table tbody tr:nth-child(even) { background: #f9f9f9 !important; }
-
-    #print-table td {
-      padding: 3.2pt 4pt; font-size: 8pt; line-height: 1.3; vertical-align: middle;
-    }
-    #print-table td.egm-num  { text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 8pt; font-weight: 600; }
-    #print-table td.coins-val { font-family: 'Share Tech Mono', monospace; font-size: 8pt; font-weight: 700; }
-    #print-table td.coins-val.has-val { color: #000 !important; font-weight: 700; }
-    #print-table td.divider   { background: #e0e0e0 !important; width: 1pt; padding: 0; }
-    #print-table td.no-coins-cell {
-      color: #888 !important; font-size: 6.5pt; font-family: 'Share Tech Mono', monospace;
-      letter-spacing: 0.06em; text-transform: uppercase;
-    }
-    #print-table td.no-coins-cell span {
-      display: inline-block; border: 0.5pt solid #999; border-radius: 2pt;
-      padding: 0.5pt 3pt; color: #888 !important; background: #f0f0f0 !important;
-    }
+  @media (max-width: 600px) {
+    .header { padding: 16px; }
+    .container { padding: 16px 16px 60px; }
+    .header-top { flex-direction: column; align-items: flex-start; }
+    .coin-input { width: 90px; }
   }
 </style>
 </head>
 <body>
 
-<div class="mobile-sticky">
-  <div class="header">
-    <div class="header-left">
-      <h1>Weekly <span>Coin</span> Clearance</h1>
+<div class="header">
+  <div class="header-top">
+    <div class="brand">
+      <div class="brand-icon">🎰</div>
+      <h1>EGM <span>Dropbox Clearance</span></h1>
     </div>
-    <div class="header-right">
-      <button class="btn-clear" onclick="clearAll()">&#x2715; Clear entries</button>
-      <button class="btn-print" onclick="window.print()">&#x2B21; Print / Save PDF</button>
+    <div class="actions">
+      <button class="btn btn-accent" onclick="calculateTotal()">⟳ Calculate Total</button>
+      <button class="btn btn-red" onclick="clearEntries()">✕ Clear Entries</button>
+      <button class="btn btn-blue" onclick="handlePrint()">⎙ Print</button>
     </div>
   </div>
-  <div class="stats-bar">
-    <div class="stat">
-      <span class="stat-label">Date</span>
-      <span class="stat-value">
-        <input type="date" id="clearance-date"
-          style="background:transparent;border:none;color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:0.95rem;outline:none;cursor:pointer;padding:0;">
-      </span>
-    </div>
-    <div class="stat">
-      <span class="stat-label">Total Coins</span>
-      <span class="stat-value" style="display:flex;align-items:center;gap:8px;">
-        <input type="number" id="total-coins-input" min="0" step="1" value="0"
-          style="background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:0.95rem;outline:none;width:90px;padding:0;-moz-appearance:textfield;"
-          title="Click Calc to sum entries, or type to override">
-        <button onclick="calculateTotal()"
-          style="background:var(--accent);color:#000;border:none;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;padding:3px 9px;border-radius:3px;cursor:pointer;">Calc</button>
-      </span>
+  <div style="margin-top: 10px;">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div>
+          <div class="stat-label">Date</div>
+          <input type="date" class="date-input" id="currentDate">
+        </div>
+      </div>
+      <div class="stat-card">
+        <div>
+          <div class="stat-label">Total Coins</div>
+          <input type="text" class="total-input" id="totalCoins" placeholder="—" inputmode="numeric">
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- 5-column screen grid (desktop) -->
-<div class="egm-grid" id="egm-grid"></div>
+<div class="container">
+  <div class="grid-wrapper">
+    <div class="table-col">
+      <table>
+        <thead><tr><th>EGM</th><th>Coins</th><th>Hopper</th><th>Notes</th></tr></thead>
+        <tbody id="tableBody1"></tbody>
+      </table>
+    </div>
+    <div class="table-col">
+      <table>
+        <thead><tr><th>EGM</th><th>Coins</th><th>Hopper</th><th>Notes</th></tr></thead>
+        <tbody id="tableBody2"></tbody>
+      </table>
+    </div>
+    <div class="table-col">
+      <table>
+        <thead><tr><th>EGM</th><th>Coins</th><th>Hopper</th><th>Notes</th></tr></thead>
+        <tbody id="tableBody3"></tbody>
+      </table>
+    </div>
+    <div class="table-col">
+      <table>
+        <thead><tr><th>EGM</th><th>Coins</th><th>Hopper</th><th>Notes</th></tr></thead>
+        <tbody id="tableBody4"></tbody>
+      </table>
+    </div>
+    <div class="table-col">
+      <table>
+        <thead><tr><th>EGM</th><th>Coins</th><th>Hopper</th><th>Notes</th></tr></thead>
+        <tbody id="tableBody5"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
-<!-- Mobile: single-column table (hidden on desktop via JS) -->
-<div class="mobile-table-wrap" id="mobile-table-wrap" style="display:none;">
-  <table id="mobile-table">
-    <thead><tr>
-      <th class="col-egm">EGM</th>
-      <th class="col-coins">Coins</th>
-      <th class="col-hopper">Hopper</th>
-      <th class="col-notes">Notes</th>
-    </tr></thead>
-    <tbody id="mobile-tbody"></tbody>
+<!-- Print-only 2-column layout -->
+<div class="print-layout">
+  <table>
+    <thead><tr><th>EGM</th><th>Coins</th><th>Hopper</th><th>Notes</th></tr></thead>
+    <tbody id="printBody1"></tbody>
+  </table>
+  <table>
+    <thead><tr><th>EGM</th><th>Coins</th><th>Hopper</th><th>Notes</th></tr></thead>
+    <tbody id="printBody2"></tbody>
   </table>
 </div>
 
-<!-- Print-only 8-column table built by JS -->
-<table id="print-table"></table>
-
 <script>
-  const DISABLED_EGMS = new Set([10,11,12,13,14,15,19,25,26,27,28,43,50,55,60,61,62,69,70,71]);
-  const EGM_NUMBERS  = Array.from({length: 77}, (_, i) => i + 1);
-  const NUM_COLS = 5;
+  const NO_COIN_MACHINES = new Set([10,11,12,13,14,15,19,25,26,27,28,43,50,55,60,61,62,69,70,71]);
+  const TOTAL_MACHINES = 77;
 
-  // Distribute EGMs as evenly as possible across NUM_COLS columns
-  function splitIntoColumns(arr, n) {
-    const cols = [];
-    const base = Math.floor(arr.length / n);
-    const extra = arr.length % n;
-    let i = 0;
-    for (let c = 0; c < n; c++) {
-      const size = base + (c < extra ? 1 : 0);
-      cols.push(arr.slice(i, i + size));
-      i += size;
-    }
-    return cols;
-  }
+  // Set date
+  const now = new Date();
+  const dateInput = document.getElementById('currentDate');
+  dateInput.value = now.toISOString().split('T')[0];
 
-  // ── Helper: get the active input for EGM n ──────────────
-  // Desktop uses id="egm-N", mobile uses id="m-egm-N"
-  function getInput(n) {
-    const isMobile = window.matchMedia('(max-width: 767px)').matches;
-    return document.getElementById(isMobile ? `m-egm-${n}` : `egm-${n}`);
-  }
+  // Total input - only accept numbers
+  document.getElementById('totalCoins').addEventListener('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+  });
 
-  // ── Helper: make a table row ──────────────────────────────
-  function makeRow(n, prefix) {
-    const disabled = DISABLED_EGMS.has(n);
+  // Build screen tables - 5 columns
+  const COL_SIZE = 16;
+  const tbodies = [
+    document.getElementById('tableBody1'),
+    document.getElementById('tableBody2'),
+    document.getElementById('tableBody3'),
+    document.getElementById('tableBody4'),
+    document.getElementById('tableBody5')
+  ];
+
+  // Build print tables - 2 columns (39 + 38)
+  const PRINT_COL = 39;
+  const printBodies = [
+    document.getElementById('printBody1'),
+    document.getElementById('printBody2')
+  ];
+
+  for (let i = 1; i <= TOTAL_MACHINES; i++) {
+    const colIndex = Math.min(Math.floor((i - 1) / COL_SIZE), 4);
+    const printColIndex = i <= PRINT_COL ? 0 : 1;
+    const isNoCoin = NO_COIN_MACHINES.has(i);
+
+    // --- Screen row ---
     const tr = document.createElement('tr');
-    if (disabled) tr.classList.add('disabled-row');
-    const inputId = prefix + n;
-    tr.innerHTML = `
-      <td class="col-egm">${String(n).padStart(2,'0')}</td>
-      <td>${disabled
-        ? '<span class="disabled-tag">no coins</span>'
-        : `<input type="text" class="coin-input" id="${inputId}" placeholder="0" autocomplete="off" inputmode="numeric" pattern="[0-9]*" enterkeyhint="next">`
-      }</td>
-      <td class="hopper-cell col-hopper"></td>
-      <td class="notes-cell col-notes"></td>
-    `;
-    if (!disabled) {
-      const input = tr.querySelector('.coin-input');
-      input.addEventListener('input', () => {
-        input.value = input.value.replace(/[^0-9]/g, '');
-        if (input.value !== '' && parseInt(input.value) < 0) input.value = 0;
-        input.classList.toggle('has-value', input.value !== '' && input.value !== '0');
-        // Sync value to sibling table's input
-        const other = document.getElementById(
-          prefix === 'egm-' ? `m-egm-${n}` : `egm-${n}`
-        );
-        if (other) { other.value = input.value; other.classList.toggle('has-value', input.classList.contains('has-value')); }
-        saveData();
+    if (isNoCoin) tr.classList.add('no-coin-row');
+
+    const tdEgm = document.createElement('td');
+    tdEgm.innerHTML = `<span class="egm-num">${String(i).padStart(2, '0')}</span>`;
+
+    const tdCoins = document.createElement('td');
+    if (isNoCoin) {
+      tdCoins.innerHTML = '<span class="egm-badge">No Coin</span>';
+    } else {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.inputMode = 'numeric';
+      input.pattern = '[0-9]*';
+      input.className = 'coin-input';
+      input.dataset.egm = i;
+      input.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+        this.classList.toggle('has-value', this.value !== '');
+        // Hide empty badge when user starts typing
+        const badge = this.parentElement.querySelector('.empty-badge');
+        if (badge) badge.style.display = 'none';
       });
-      input.addEventListener('keydown', e => {
-        if (e.key === 'Enter') { e.preventDefault(); focusNext(n); }
-      });
-      input.addEventListener('keypress', e => {
-        if (e.key === 'Enter') { e.preventDefault(); focusNext(n); }
-      });
+      tdCoins.appendChild(input);
+      const emptyBadge = document.createElement('span');
+      emptyBadge.className = 'empty-badge';
+      emptyBadge.textContent = 'Empty';
+      emptyBadge.dataset.emptyEgm = i;
+      tdCoins.appendChild(emptyBadge);
     }
-    return tr;
-  }
 
-  // ── Build desktop 5-column grid ──────────────────────────
-  const grid = document.getElementById('egm-grid');
-  const columns = splitIntoColumns(EGM_NUMBERS, NUM_COLS);
+    const tdHopper = document.createElement('td');
+    const tdNotes = document.createElement('td');
+    tr.append(tdEgm, tdCoins, tdHopper, tdNotes);
+    tbodies[colIndex].appendChild(tr);
 
-  columns.forEach(colEGMs => {
-    const colDiv = document.createElement('div');
-    colDiv.className = 'egm-col';
-    const table = document.createElement('table');
-    table.innerHTML = `<thead><tr>
-      <th class="col-egm">EGM</th>
-      <th class="col-coins">Coins</th>
-      <th class="col-hopper">Hopper</th>
-      <th class="col-notes">Notes</th>
-    </tr></thead>`;
-    const tbody = document.createElement('tbody');
-    colEGMs.forEach(n => tbody.appendChild(makeRow(n, 'egm-')));
-    table.appendChild(tbody);
-    colDiv.appendChild(table);
-    grid.appendChild(colDiv);
-  });
+    // --- Print row ---
+    const ptr = document.createElement('tr');
+    if (isNoCoin) ptr.classList.add('no-coin-row');
 
-  // ── Build mobile single-column table ─────────────────────
-  const mobileTbody = document.getElementById('mobile-tbody');
-  EGM_NUMBERS.forEach(n => mobileTbody.appendChild(makeRow(n, 'm-egm-')));
+    const ptdEgm = document.createElement('td');
+    ptdEgm.innerHTML = `<span class="egm-num">${String(i).padStart(2, '0')}</span>`;
 
-  // ── Show correct layout based on viewport ────────────────
-  function applyLayout() {
-    const isMobile = window.matchMedia('(max-width: 767px)').matches;
-    document.getElementById('egm-grid').style.display          = isMobile ? 'none' : '';
-    document.getElementById('mobile-table-wrap').style.display = isMobile ? 'block' : 'none';
-  }
-  applyLayout();
-  window.addEventListener('resize', applyLayout);
-
-  // ── Build print table (8-column layout) ─────────────────
-  function buildPrintTable() {
-    const pt = document.getElementById('print-table');
-    pt.innerHTML = '';
-
-    const thead = document.createElement('thead');
-    thead.innerHTML = `<tr>
-      <th class="col-egm-p">EGM</th><th class="col-coins-p">Coins</th>
-      <th class="col-hopper-p">Hopper</th><th class="col-notes-p">Notes</th>
-      <th class="col-div"></th>
-      <th class="col-egm-p">EGM</th><th class="col-coins-p">Coins</th>
-      <th class="col-hopper-p">Hopper</th><th class="col-notes-p">Notes</th>
-    </tr>`;
-    pt.appendChild(thead);
-
-    const ptbody = document.createElement('tbody');
-    const half = Math.ceil(EGM_NUMBERS.length / 2);
-
-    for (let i = 0; i < half; i++) {
-      const left  = EGM_NUMBERS[i];
-      const right = EGM_NUMBERS[i + half];
-
-      const makeCell = (n) => {
-        if (n === undefined) return '<td></td><td></td><td></td><td></td>';
-        const disabled = DISABLED_EGMS.has(n);
-        const label = String(n).padStart(2, '0');
-        if (disabled) {
-          return `<td class="egm-num">${label}</td><td class="no-coins-cell"><span>no coins</span></td><td></td><td></td>`;
-        }
-        const inp = document.getElementById(`egm-${n}`) || document.getElementById(`m-egm-${n}`);
-        const val = inp ? inp.value : '';
-        const hasVal = val !== '' && val !== '0';
-        if (!hasVal) {
-          return `<td class="egm-num">${label}</td><td class="no-coins-cell"><span>no coins</span></td><td></td><td></td>`;
-        }
-        return `<td class="egm-num">${label}</td><td class="coins-val has-val">${val}</td><td></td><td></td>`;
-      };
-
-      const tr = document.createElement('tr');
-      tr.innerHTML = makeCell(left) + '<td class="divider"></td>' + makeCell(right);
-      ptbody.appendChild(tr);
+    const ptdCoins = document.createElement('td');
+    if (isNoCoin) {
+      ptdCoins.innerHTML = '<span class="egm-badge">No Coin</span>';
+    } else {
+      const pspan = document.createElement('span');
+      pspan.className = 'coin-value';
+      pspan.dataset.printEgm = i;
+      ptdCoins.appendChild(pspan);
+      const pEmptyBadge = document.createElement('span');
+      pEmptyBadge.className = 'empty-badge';
+      pEmptyBadge.textContent = 'Empty';
+      pEmptyBadge.dataset.printEmptyEgm = i;
+      ptdCoins.appendChild(pEmptyBadge);
     }
-    pt.appendChild(ptbody);
+
+    const ptdHopper = document.createElement('td');
+    const ptdNotes = document.createElement('td');
+    ptr.append(ptdEgm, ptdCoins, ptdHopper, ptdNotes);
+    printBodies[printColIndex].appendChild(ptr);
   }
 
-  document.addEventListener('input', e => {
-    if (e.target.classList.contains('coin-input')) buildPrintTable();
-  });
+  // Add empty row to right table so both have 39 rows (uniform height)
+  const emptyRow = document.createElement('tr');
+  for (let c = 0; c < 4; c++) {
+    const td = document.createElement('td');
+    td.innerHTML = '&nbsp;';
+    emptyRow.appendChild(td);
+  }
+  printBodies[1].appendChild(emptyRow);
 
-  // ── Focus next active EGM ────────────────────────────────
-  function focusNext(current) {
-    const active = EGM_NUMBERS.filter(n => !DISABLED_EGMS.has(n));
-    const idx = active.indexOf(current);
-    if (idx !== -1 && idx < active.length - 1) {
-      const nextInput = getInput(active[idx+1]);
-      if (nextInput) {
-        nextInput.focus();
-        setTimeout(() => nextInput.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+  // Sync screen values to print layout before printing
+  function syncPrintValues() {
+    document.querySelectorAll('.container .coin-input').forEach(input => {
+      const egm = input.dataset.egm;
+      const printSpan = document.querySelector(`[data-print-egm="${egm}"]`);
+      const printEmpty = document.querySelector(`[data-print-empty-egm="${egm}"]`);
+      if (printSpan) {
+        printSpan.textContent = input.value;
       }
-    }
+      // Sync empty badge visibility
+      const screenEmpty = document.querySelector(`[data-empty-egm="${egm}"]`);
+      if (printEmpty && screenEmpty) {
+        if (screenEmpty.style.display === 'inline') {
+          printEmpty.classList.add('visible');
+          if (printSpan) printSpan.style.display = 'none';
+        } else {
+          printEmpty.classList.remove('visible');
+          if (printSpan) printSpan.style.display = '';
+        }
+      }
+    });
   }
 
-  // ── Total Coins ──────────────────────────────────────────
-  let totalOverridden = false;
-  const totalInput = document.getElementById('total-coins-input');
-
-  totalInput.addEventListener('input', () => {
-    totalOverridden = true;
-    if (totalInput.value.includes('.')) totalInput.value = Math.floor(parseFloat(totalInput.value));
-    if (totalInput.value < 0) totalInput.value = 0;
-    saveData();
-  });
-  totalInput.addEventListener('focus', () => { totalInput.style.borderBottomColor = 'var(--accent2)'; });
-  totalInput.addEventListener('blur',  () => {
-    totalInput.style.borderBottomColor = totalOverridden ? 'var(--accent2)' : 'var(--border)';
-  });
+  function handlePrint() {
+    syncPrintValues();
+    window.print();
+  }
 
   function calculateTotal() {
     let total = 0;
-    EGM_NUMBERS.filter(n => !DISABLED_EGMS.has(n)).forEach(n => {
-      total += parseInt(getInput(n).value) || 0;
-    });
-    totalInput.value = total;
-    totalOverridden = false;
-    totalInput.style.borderBottomColor = 'var(--border)';
-    saveData();
-  }
-
-  // ── Storage ──────────────────────────────────────────────
-  const STORAGE_KEY = 'egm-clearance-v1';
-
-  function saveData() {
-    const data = {};
-    // Always save from both tables (they stay in sync); just read desktop ids
-    EGM_NUMBERS.filter(n => !DISABLED_EGMS.has(n)).forEach(n => {
-      const inp = document.getElementById(`egm-${n}`) || document.getElementById(`m-egm-${n}`);
-      data[n] = inp ? inp.value : '';
-    });
-    data._date          = document.getElementById('clearance-date').value;
-    data._totalOverride = totalOverridden ? totalInput.value : null;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  }
-
-  function loadData() {
-    try {
-      const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-      if (data._date) document.getElementById('clearance-date').value = data._date;
-      EGM_NUMBERS.filter(n => !DISABLED_EGMS.has(n)).forEach(n => {
-        // Load into both desktop and mobile inputs
-        ['egm-', 'm-egm-'].forEach(prefix => {
-          const inp = document.getElementById(prefix + n);
-          if (inp && data[n] !== undefined && data[n] !== '') {
-            inp.value = data[n];
-            inp.classList.toggle('has-value', data[n] !== '0' && data[n] !== '');
-          }
-        });
-      });
-      if (data._totalOverride !== null && data._totalOverride !== undefined) {
-        totalOverridden = true;
-        totalInput.value = data._totalOverride;
-        totalInput.style.borderBottomColor = 'var(--accent2)';
+    document.querySelectorAll('.container .coin-input').forEach(input => {
+      const val = parseInt(input.value, 10);
+      const egm = input.dataset.egm;
+      const badge = document.querySelector(`[data-empty-egm="${egm}"]`);
+      if (!isNaN(val)) {
+        total += val;
+        if (badge) badge.style.display = 'none';
+        input.style.display = '';
+      } else {
+        // Blank input — show empty badge, hide input
+        if (badge) badge.style.display = 'inline';
+        input.style.display = 'none';
       }
-      buildPrintTable();
-    } catch(e) {}
-  }
-
-  function clearAll() {
-    if (!confirm('Clear all coin entries?')) return;
-    EGM_NUMBERS.filter(n => !DISABLED_EGMS.has(n)).forEach(n => {
-      ['egm-', 'm-egm-'].forEach(prefix => {
-        const inp = document.getElementById(prefix + n);
-        if (inp) { inp.value = ''; inp.classList.remove('has-value'); }
-      });
     });
-    totalOverridden = false;
-    totalInput.value = 0;
-    totalInput.style.borderBottomColor = 'var(--border)';
-    saveData();
-    buildPrintTable();
+    document.getElementById('totalCoins').value = total.toLocaleString('en-AU');
   }
 
-  // ── Date default ─────────────────────────────────────────
-  const dateInput = document.getElementById('clearance-date');
-  dateInput.addEventListener('change', saveData);
-  const today = new Date();
-  dateInput.value = today.getFullYear() + '-' +
-    String(today.getMonth()+1).padStart(2,'0') + '-' +
-    String(today.getDate()).padStart(2,'0');
-
-  // ── Init ─────────────────────────────────────────────────
-  loadData();
-  buildPrintTable();
+  function clearEntries() {
+    if (!confirm('Clear all coin entries? This cannot be undone.')) return;
+    document.querySelectorAll('.container .coin-input').forEach(input => {
+      input.value = '';
+      input.classList.remove('has-value');
+      input.style.display = '';
+    });
+    document.querySelectorAll('.empty-badge').forEach(badge => {
+      badge.style.display = 'none';
+      badge.classList.remove('visible');
+    });
+    document.getElementById('totalCoins').value = '';
+  }
 </script>
+
 </body>
 </html>

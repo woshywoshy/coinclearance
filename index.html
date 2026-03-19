@@ -382,12 +382,20 @@
     .btn-print, .btn-clear, button { display: none !important; }
     .egm-grid { display: none !important; }
 
+    /* Hide mobile-only elements; reset sticky bar for print */
+    .mobile-sticky { position: static !important; border-bottom: none !important; padding: 0 !important; background: transparent !important; }
+    .mobile-table-wrap { display: none !important; }
+    #egm-form { display: contents; }
+
     #print-table { display: table; width: 100%; border-collapse: collapse; margin-top: 4pt; }
 
     .header {
       border-bottom: 1.5pt solid #000;
       padding-bottom: 5pt;
       margin-bottom: 4pt;
+      /* Reset any mobile overrides */
+      flex-direction: row !important;
+      flex-wrap: wrap !important;
     }
     .header-left h1 { color: #000 !important; font-size: 14pt; }
     .header-left h1 span { color: #c47a00 !important; }

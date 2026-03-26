@@ -506,19 +506,80 @@
   const TOTAL_MACHINES = 77;
 
   // ===== THEME =====
+  const savedTheme = localStorage.getItem('egm-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  document.getElementById('themeBtn').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
   function toggleTheme() {
     const html = document.documentElement;
     const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     html.setAttribute('data-theme', next);
     document.getElementById('themeBtn').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('egm-theme', next);
   }
 
-  // ===== DATE =====
-  document.getElementById('currentDate').value = new Date().toISOString().split('T')[0];
+  // ===== AUTOSAVE =====
+  const SAVE_KEY = 'egm-dropbox-clearance';
+
+  function autoSave() {
+    const data = {
+      date: document.getElementById('currentDate').value,
+      total: document.getElementById('totalCoins').value,
+      coins: {},
+      empties: []
+    };
+    document.querySelectorAll('.container .coin-input').forEach(input => {
+      if (input.value) data.coins[input.dataset.egm] = input.value;
+    });
+    document.querySelectorAll('.container [data-empty-egm]').forEach(badge => {
+      if (badge.style.display === 'inline') data.empties.push(badge.dataset.emptyEgm);
+    });
+    localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+  }
+
+  function autoLoad() {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return false;
+    try {
+      const data = JSON.parse(raw);
+      if (data.date) document.getElementById('currentDate').value = data.date;
+      if (data.total) document.getElementById('totalCoins').value = data.total;
+      return data;
+    } catch(e) { return false; }
+  }
+
+  function restoreCoinValues(data) {
+    if (!data || !data.coins) return;
+    Object.entries(data.coins).forEach(([egm, val]) => {
+      const input = document.querySelector(`.coin-input[data-egm="${egm}"]`);
+      if (input) {
+        input.value = val;
+        input.classList.toggle('has-value', val !== '');
+      }
+    });
+    if (data.empties) {
+      data.empties.forEach(egm => {
+        const badge = document.querySelector(`[data-empty-egm="${egm}"]`);
+        const input = document.querySelector(`.coin-input[data-egm="${egm}"]`);
+        if (badge) badge.style.display = 'inline';
+        if (input) input.style.display = 'none';
+      });
+    }
+  }
+
+  // Load saved date/total before building tables
+  const savedData = autoLoad();
+
+  // ===== DATE (only set today if no saved data) =====
+  if (!savedData) document.getElementById('currentDate').value = new Date().toISOString().split('T')[0];
+
+  // Save on date change
+  document.getElementById('currentDate').addEventListener('change', autoSave);
 
   // ===== TOTAL INPUT =====
   document.getElementById('totalCoins').addEventListener('input', function() {
     this.value = this.value.replace(/[^0-9]/g, '');
+    autoSave();
   });
 
   // ===== BUILD TABLES =====
@@ -557,6 +618,7 @@
         const badge = this.parentElement.querySelector('.empty-badge');
         if (badge) badge.style.display = 'none';
         if (this.style.display === 'none') this.style.display = '';
+        autoSave();
       });
       input.addEventListener('keydown', function(e) {
         if (e.key === 'Enter' || (e.key === 'Tab' && !e.shiftKey)) {
@@ -583,6 +645,7 @@
         this.style.display = 'none';
         input.style.display = '';
         input.focus();
+        autoSave();
       });
       tdCoins.appendChild(emptyBadge);
     }
@@ -625,6 +688,9 @@
   for (let c = 0; c < 4; c++) { const td = document.createElement('td'); td.innerHTML = '&nbsp;'; padRow.appendChild(td); }
   printBodies[1].appendChild(padRow);
 
+  // Restore saved coin values after tables are built
+  restoreCoinValues(savedData);
+
   // ===== SYNC PRINT =====
   function syncPrintValues() {
     document.querySelectorAll('.container .coin-input').forEach(input => {
@@ -663,6 +729,7 @@
       }
     });
     document.getElementById('totalCoins').value = total.toLocaleString('en-AU');
+    autoSave();
   }
 
   // ===== CLEAR =====
@@ -675,6 +742,7 @@
     });
     document.querySelectorAll('.empty-badge').forEach(b => { b.style.display = 'none'; b.classList.remove('visible'); });
     document.getElementById('totalCoins').value = '';
+    localStorage.removeItem(SAVE_KEY);
   }
 
   // ===== EXPORT CSV =====
